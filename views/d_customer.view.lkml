@@ -4,7 +4,7 @@ view: d_customer {
   dimension: c_address {
     type: string
     sql: ${TABLE}."C_ADDRESS" ;;
-    label: "Address"
+    label: "Customer Address"
   }
   dimension: c_custkey {
     primary_key: yes
@@ -20,22 +20,22 @@ view: d_customer {
   dimension: c_name {
     type: string
     sql: ${TABLE}."C_NAME" ;;
-    label: "Name"
+    label: "Customer Name"
   }
   dimension: c_nation {
     type: string
     sql: ${TABLE}."C_NATION" ;;
-    label: "Nation"
+    label: "Customer Nation"
   }
   dimension: c_phone {
     type: string
     sql: ${TABLE}."C_PHONE" ;;
-    label: "Phone"
+    label: "Customer Phone"
   }
   dimension: c_region {
     type: string
     sql: ${TABLE}."C_REGION" ;;
-    label: "Region"
+    label: "Customer Region"
   }
   measure: count {
     type: count
