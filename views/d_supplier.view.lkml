@@ -6,30 +6,45 @@ view: d_supplier {
     sql: ${TABLE}."S_ACCTBAL" ;;
     label: "Account Balance"
   }
+
+  dimension: s_acctbal_tier {
+    type: tier
+    tiers: [1, 3001, 5001, 7001]
+    style: integer
+    sql: ${s_acctbal} ;;
+    label: "Cohort of suppliers according to Account Balance"
+    description: "Cohort of suppliers according to Account Balance:
+    <= 0;
+    1—3000;
+    3001—5000;
+    5001—7000;
+    7000 <"
+  }
+
   dimension: s_address {
     type: string
     sql: ${TABLE}."S_ADDRESS" ;;
-    label: "Address"
+    label: "Supplier Address"
   }
   dimension: s_name {
     type: string
     sql: ${TABLE}."S_NAME" ;;
-    label: "Name"
+    label: "Supplier Name"
   }
   dimension: s_nation {
     type: string
     sql: ${TABLE}."S_NATION" ;;
-    label: "Nation"
+    label: "Supplier Nation"
   }
   dimension: s_phone {
     type: string
     sql: ${TABLE}."S_PHONE" ;;
-    label: "Phone"
+    label: "Supplier Phone"
   }
   dimension: s_region {
     type: string
     sql: ${TABLE}."S_REGION" ;;
-    label: "Region"
+    label: "Supplier Region"
   }
   dimension: s_suppkey {
     primary_key: yes

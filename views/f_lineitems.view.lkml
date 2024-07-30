@@ -118,6 +118,12 @@ view: f_lineitems {
     label: "Total Price"
   }
 
+  dimension: customer_nation {
+    type: string
+    sql: ${d_customer.c_nation} ;;
+    hidden: yes
+  }
+
   measure: count {
     type: count
     label: "Order Count"
@@ -159,5 +165,106 @@ view: f_lineitems {
     value_format: "$#,##0.00,,\" M\""
     label: "Cumulative Total Sales"
     description: "Cumulative total sales from items sold."
+  }
+
+  measure: total_sales_shipped_by_air {
+    type: sum
+    sql: ${price_with_tax} ;;
+    value_format: "$#,##0.00,,\" M\""
+    label: "Total Sale Price Shipped By Air"
+    description: "Total sales of items shipped by air."
+    filters: [
+      l_shipmode: "AIR"
+    ]
+  }
+
+  # WTF??? ARE YOU SERIOUS ABOUT THAT?? ONLY THIS COUNTRY WAS AVAILABLE FOR THE TASK??
+  measure: total_russia_sales {
+    type: sum
+    sql: ${price_with_tax} ;;
+    value_format: "$#,##0.00,,\" M\""
+    label: "Total Russia Sales"
+    description: "Total sales by customers from Russia."
+    filters: [
+      customer_nation: "RUSSIA"
+    ]
+  }
+
+  measure: total_gross_revenue {
+    type: sum
+    sql: ${price_with_tax} ;;
+    value_format: "$#,##0.00,,\" M\""
+    label: "Total Gross Revenue"
+    description: "Total price of completed sales."
+    filters: [
+      l_orderstatus: "F"
+    ]
+  }
+
+  measure: total_cost {
+    type: sum
+    sql: ${l_supplycost} ;;
+    value_format: "$#,##0.00,,\" M\""
+    label: "Total Cost"
+    description: "Total Cost."
+  }
+
+  measure: total_gross_margin_amount {
+    type: number
+    sql: ${total_gross_revenue} - ${total_cost} ;;
+    value_format: "$#,##0.00,,\" M\""
+    label: "Total Gross Margin Amount"
+    description: "Total Gross Revenue – Total Cost."
+  }
+
+  measure: total_margin_percentage {
+    type: number
+    sql: ${total_gross_margin_amount}/${total_gross_revenue} ;;
+    value_format: "0.00%"
+    label: "Gross Margin Percentage"
+    description: "Total Gross Margin Amount / Total Gross Revenue."
+  }
+
+  measure: number_of_item_returned {
+    type: sum
+    sql: ${l_quantity} ;;
+    value_format: "#,##0.00,,\" K\""
+    label: "Number of Items Returned"
+    description: "Number of items that were returned by dissatisfied customers."
+    filters: [
+      l_returnflag: "R"
+    ]
+  }
+
+  measure: total_number_of_item_sold {
+    type: sum
+    sql: ${l_quantity} ;;
+    value_format: "#,##0.00,,\" K\""
+    label: "Total Number of Items Sold"
+    description: "Number of items that were sold."
+  }
+
+  measure: item_return_rate {
+    type: number
+    sql: ${number_of_item_returned}/${total_number_of_item_sold} ;;
+    value_format: "0.00%"
+    label: "Item Return Rate"
+    description: "Number Of Items Returned / Total Number Of Items Sold."
+  }
+
+  measure: total_number_of_customers {
+    type: count_distinct
+    sql: ${l_custkey} ;;
+    value_format: "#,##0"
+    label: "Total Number of Customers"
+    description: "Number of Customers that placed orders."
+  }
+
+  measure: avg_spend_per_customer {
+    type: number
+    sql: ${total_sale_price}/${total_number_of_customers} ;;
+    value_format: "$#,##0.00,,\" M\""
+    label: "Average Spend per Customer"
+    description: "Total Sale Price / Total Number of Customers."
   }
 }
