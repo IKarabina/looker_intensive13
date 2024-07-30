@@ -160,4 +160,9 @@ view: f_lineitems {
     label: "Cumulative Total Sales"
     description: "Cumulative total sales from items sold."
   }
+  measure: total_sales_from_items_sold {
+    type: sum
+    sql: ${l_totalprice} * (1 + ${l_tax}) ;;
+    value_format_name: usd
+  }
 }
