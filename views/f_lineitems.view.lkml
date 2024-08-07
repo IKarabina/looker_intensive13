@@ -178,27 +178,36 @@ view: f_lineitems {
     ]
   }
 
-  # WTF??? ARE YOU SERIOUS ABOUT THAT?? ONLY THIS COUNTRY WAS AVAILABLE FOR THE TASK??
-  measure: total_russia_sales {
+  measure: total_united_states_sales {
     type: sum
     sql: ${price_with_tax} ;;
     value_format: "$#,##0.00,,\" M\""
-    label: "Total Russia Sales"
-    description: "Total sales by customers from Russia."
+    label: "Total United States Sales"
+    description: "Total sales by customers from United States."
     filters: [
-      customer_nation: "RUSSIA"
+      customer_nation: "UNITED STATES"
     ]
   }
 
   measure: total_gross_revenue {
     type: sum
     sql: ${price_with_tax} ;;
+    #drill_fields: [d_supplier.s_acctbal_tier, d_supplier.s_region, total_gross_revenue]
+    drill_fields: [d_supplier.detail*, total_gross_revenue]
     value_format: "$#,##0.00,,\" M\""
     label: "Total Gross Revenue"
     description: "Total price of completed sales."
     filters: [
       l_orderstatus: "F"
     ]
+  }
+
+  measure: gross_revenue_percentage {
+    type: percent_of_total
+    sql: ${total_gross_revenue} ;;
+    #value_format: "0.00%"
+    label: "Gross Revenue Percent of Total"
+    description: "Percentage of the total revenue"
   }
 
   measure: total_cost {
@@ -219,7 +228,7 @@ view: f_lineitems {
 
   measure: total_margin_percentage {
     type: number
-    sql: ${total_gross_margin_amount}/${total_gross_revenue} ;;
+    sql: case when ${total_gross_revenue} <> 0 then ${total_gross_margin_amount}/${total_gross_revenue} end ;;
     value_format: "0.00%"
     label: "Gross Margin Percentage"
     description: "Total Gross Margin Amount / Total Gross Revenue."
@@ -246,7 +255,7 @@ view: f_lineitems {
 
   measure: item_return_rate {
     type: number
-    sql: ${number_of_item_returned}/${total_number_of_item_sold} ;;
+    sql: case when ${total_number_of_item_sold} <> 0 then ${number_of_item_returned}/${total_number_of_item_sold} end;;
     value_format: "0.00%"
     label: "Item Return Rate"
     description: "Number Of Items Returned / Total Number Of Items Sold."
@@ -262,7 +271,7 @@ view: f_lineitems {
 
   measure: avg_spend_per_customer {
     type: number
-    sql: ${total_sale_price}/${total_number_of_customers} ;;
+    sql: case when ${total_number_of_customers} <> 0 then ${total_sale_price}/${total_number_of_customers} end ;;
     value_format: "$#,##0.00,,\" M\""
     label: "Average Spend per Customer"
     description: "Total Sale Price / Total Number of Customers."

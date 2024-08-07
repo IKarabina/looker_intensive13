@@ -1,6 +1,13 @@
 view: d_supplier {
   sql_table_name: "DATA_MART"."D_SUPPLIER" ;;
 
+  set: detail {
+    fields: [
+      s_acctbal_tier
+      ,s_region
+    ]
+  }
+
   dimension: s_acctbal {
     type: number
     sql: ${TABLE}."S_ACCTBAL" ;;
@@ -30,6 +37,11 @@ view: d_supplier {
     type: string
     sql: ${TABLE}."S_NAME" ;;
     label: "Supplier Name"
+    link: {
+      label: "Supplier's website"
+      url: "https://www.google.com/search?q={{ value | url_encode }}"
+      icon_url: "https://google.com/favicon.ico"
+    }
   }
   dimension: s_nation {
     type: string
