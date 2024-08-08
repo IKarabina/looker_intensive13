@@ -248,7 +248,7 @@ view: f_lineitems {
   measure: total_number_of_item_sold {
     type: sum
     sql: ${l_quantity} ;;
-    value_format: "#,##0.00,,\" K\""
+    value_format: "#,##0"
     label: "Total Number of Items Sold"
     description: "Number of items that were sold."
   }
