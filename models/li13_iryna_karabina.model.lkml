@@ -10,6 +10,8 @@ datagroup: li13_iryna_karabina_default_datagroup {
 
 persist_with: li13_iryna_karabina_default_datagroup
 
+
+
 explore: d_customer {
   hidden: yes
 }
@@ -82,4 +84,23 @@ explore: f_lineitems {
     relationship: many_to_one
     view_label: "Commit Date"
   }
+}
+
+# copy explore to test look without PDT
+explore: orderitems {
+  label: "Order Items (Copy)"
+  view_label: "Orders"
+}
+
+datagroup: daily_datagroup {
+  sql_trigger: SELECT FORMAT_TIMESTAMP('%F',
+    CURRENT_TIMESTAMP(), 'America/Los_Angeles') ;;
+  max_cache_age: "24 hours"
+}
+
+# copy explore to test PDT
+explore: orderitems_pdt1 {
+  label: "Order Items (with_PDT)"
+  view_label: "Orders"
+
 }

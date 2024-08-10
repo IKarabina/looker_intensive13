@@ -36,6 +36,7 @@ view: d_customer {
     type: string
     sql: ${TABLE}."C_REGION" ;;
     label: "Customer Region"
+    html: <a href="/dashboards/304?Customer+Region={{_filters['d_customer.c_region'] | url_encode }}">{{ value }}</a> ;;
   }
   measure: count {
     type: count

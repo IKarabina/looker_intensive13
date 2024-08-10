@@ -55,4 +55,48 @@ view: d_dates {
     drill_fields: [month_name]
     label: "Date Count"
   }
+
+  dimension: date_date {
+    datatype: date
+    sql: ${TABLE}."DATE_VAL" ;;
+    hidden: yes
+  }
+
+  parameter: p_date_type {
+    type: unquoted
+    label: "Date Type"
+    allowed_value:{
+      value: "Year"
+      label: "Year"
+    }
+    allowed_value:{
+      value: "Quarter"
+      label: "Quarter"
+    }
+    allowed_value: {
+      value: "Month"
+      label: "Month"
+    }
+    allowed_value:{
+      value: "Day"
+      label: "Day"
+    }
+  }
+
+  dimension: d_date_type {
+    type: number
+    label_from_parameter: p_date_type
+    sql: {% parameter p_date_type %} ${date_date} ;;
+    label: "Dynamic Date"
+  }
+
+  dimension: dynamic_chart_name {
+    label_from_parameter: p_date_type
+    type: string
+    sql: {% if p_date_type._parameter_value=="Year" %} 'Gross Margin Yearly Trend'
+        {% elsif p_date_type._parameter_value=="Quarter" %} 'Gross Margin Quarterly Trend'
+        {% elsif p_date_type._parameter_value=="Month" %} 'Gross Margin Monthly Trend'
+        {% elsif p_date_type._parameter_value=="Day" %} 'Gross Margin Daily Trend'
+        {% endif %};;
+  }
 }

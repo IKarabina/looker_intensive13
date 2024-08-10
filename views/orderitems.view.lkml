@@ -1,4 +1,4 @@
-view: f_lineitems {
+view: orderitems {
   sql_table_name: "DATA_MART"."F_LINEITEMS" ;;
 
   dimension: l_availqty {
@@ -60,7 +60,8 @@ view: f_lineitems {
   dimension: l_partkey {
     type: number
     sql: ${TABLE}."L_PARTKEY" ;;
-    hidden: yes
+    label: "Part Key"
+    #hidden: yes
   }
   dimension: l_quantity {
     type: number
@@ -119,12 +120,6 @@ view: f_lineitems {
     label: "Total Price"
   }
 
-  dimension: customer_nation {
-    type: string
-    sql: ${d_customer.c_nation} ;;
-    hidden: yes
-  }
-
   measure: count {
     type: count
     label: "Order Count"
@@ -147,7 +142,7 @@ view: f_lineitems {
   measure: total_sale_price {
     type: sum
     sql: ${price_with_tax} ;;
-    value_format: "$#,##0.00,,\" M\""
+    value_format_name: usd
     label: "Total Sale Price"
     description: "Total sales from items sold."
   }
@@ -179,23 +174,12 @@ view: f_lineitems {
     ]
   }
 
-  measure: total_united_states_sales {
-    type: sum
-    sql: ${price_with_tax} ;;
-    value_format: "$#,##0.00,,\" M\""
-    label: "Total United States Sales"
-    description: "Total sales by customers from United States."
-    filters: [
-      customer_nation: "UNITED STATES"
-    ]
-  }
-
   measure: total_gross_revenue {
     type: sum
     sql: ${price_with_tax} ;;
     #drill_fields: [d_supplier.s_acctbal_tier, d_supplier.s_region, total_gross_revenue]
     drill_fields: [d_supplier.detail*, total_gross_revenue]
-    value_format: "$#,##0.00,,\" M\""
+    value_format_name: usd
     label: "Total Gross Revenue"
     description: "Total price of completed sales."
     filters: [
@@ -214,7 +198,7 @@ view: f_lineitems {
   measure: total_cost {
     type: sum
     sql: ${l_supplycost} ;;
-    value_format: "$#,##0.00,,\" M\""
+    value_format_name: usd
     label: "Total Cost"
     description: "Total Cost."
   }
@@ -222,7 +206,7 @@ view: f_lineitems {
   measure: total_gross_margin_amount {
     type: number
     sql: ${total_gross_revenue} - ${total_cost} ;;
-    value_format: "$#,##0.00,,\" M\""
+    value_format_name: usd
     label: "Total Gross Margin Amount"
     description: "Total Gross Revenue – Total Cost."
   }
@@ -261,12 +245,12 @@ view: f_lineitems {
     label: "Item Return Rate"
     description: "Number Of Items Returned / Total Number Of Items Sold."
     html: {% if value < 0.3 %}
-    <font color="green">{{rendered_value}}</font>
-    {% elsif value >=0.3 and value <0.5 %}
-    <font color="yellow">{{rendered_value}}</font>
-    {% else %}
-    <font color="red">{{rendered_value}}</font>
-    {% endif %} ;;
+          <font color="green">{{rendered_value}}</font>
+          {% elsif value >=0.3 and value <0.5 %}
+          <font color="yellow">{{rendered_value}}</font>
+          {% else %}
+          <font color="red">{{rendered_value}}</font>
+          {% endif %} ;;
   }
 
   measure: total_number_of_customers {
@@ -280,7 +264,7 @@ view: f_lineitems {
   measure: avg_spend_per_customer {
     type: number
     sql: case when ${total_number_of_customers} <> 0 then ${total_sale_price}/${total_number_of_customers} end ;;
-    value_format: "$#,##0.00,,\" M\""
+    value_format_name: usd
     label: "Average Spend per Customer"
     description: "Total Sale Price / Total Number of Customers."
   }
