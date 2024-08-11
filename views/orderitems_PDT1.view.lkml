@@ -15,7 +15,8 @@ view: orderitems_pdt1 {
         column: total_number_of_item_sold {}
         column: number_of_item_returned {}
       }
-      datagroup_trigger: daily_datagroup
+      #datagroup_trigger: daily_datagroup
+      persist_for: "24 hour"
     }
     dimension: l_orderkey {
       label: "Orders Order Key"
@@ -84,4 +85,52 @@ view: orderitems_pdt1 {
       value_format: "#,##0"
       type: number
     }
+
+  measure: m_total_cost {
+    label: "Total Cost"
+    description: "Total Cost."
+    value_format: "$#,##0.00"
+    type: sum
+    sql: ${total_cost} ;;
+  }
+
+  measure: m_total_sale_price {
+    label: "Total Sale Price"
+    description: "Total sales from items sold."
+    value_format: "$#,##0.00"
+    type: sum
+    sql: ${total_sale_price} ;;
+  }
+
+  measure: m_total_gross_revenue {
+    label: "Total Gross Revenue"
+    description: "Total price of completed sales."
+    value_format: "$#,##0.00"
+    type: sum
+    sql: ${total_gross_revenue} ;;
+  }
+
+  measure: m_total_gross_margin_amount {
+    label: "Total Gross Margin Amount"
+    description: "Total Gross Revenue – Total Cost."
+    value_format: "$#,##0.00"
+    type: sum
+    sql: ${total_gross_margin_amount} ;;
+  }
+
+  measure: m_total_number_of_item_sold {
+    label: "Total Number of Items Sold"
+    description: "Number of items that were sold."
+    value_format: "#,##0"
+    type: sum
+    sql: ${total_number_of_item_sold} ;;
+  }
+
+  measure: m_number_of_item_returned {
+    label: "Number of Items Returned"
+    description: "Number of items that were returned by dissatisfied customers."
+    value_format: "#,##0"
+    type: sum
+    sql: ${number_of_item_returned} ;;
+  }
 }

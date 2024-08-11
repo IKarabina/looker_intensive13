@@ -93,8 +93,7 @@ explore: orderitems {
 }
 
 datagroup: daily_datagroup {
-  sql_trigger: SELECT FORMAT_TIMESTAMP('%F',
-    CURRENT_TIMESTAMP(), 'America/Los_Angeles') ;;
+  sql_trigger: SELECT CURRENT_TIMESTAMP() ;;
   max_cache_age: "24 hours"
 }
 
