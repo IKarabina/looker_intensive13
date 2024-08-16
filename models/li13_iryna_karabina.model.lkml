@@ -93,7 +93,7 @@ explore: orderitems {
 }
 
 datagroup: daily_datagroup {
-  sql_trigger: SELECT CURRENT_TIMESTAMP() ;;
+  sql_trigger: SELECT CURRENT_DATE() ;;
   max_cache_age: "24 hours"
 }
 
