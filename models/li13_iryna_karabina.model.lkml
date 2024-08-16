@@ -101,5 +101,14 @@ datagroup: daily_datagroup {
 explore: orderitems_pdt1 {
   label: "Order Items (with_PDT)"
   view_label: "Orders"
+  aggregate_table: orderitems_agg {
+    query: {
+      dimensions: [l_orderkey]
+      measures: [m_total_number_of_item_sold,m_number_of_item_returned]
+    }
 
+    materialization: {
+      datagroup_trigger: daily_datagroup
+    }
+  }
 }

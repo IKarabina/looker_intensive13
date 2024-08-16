@@ -15,8 +15,8 @@ view: orderitems_pdt1 {
         column: total_number_of_item_sold {}
         column: number_of_item_returned {}
       }
-      #datagroup_trigger: daily_datagroup
-      persist_for: "24 hours"
+      datagroup_trigger: daily_datagroup
+      #persist_for: "24 hours"
     }
     dimension: l_orderkey {
       label: "Orders Order Key"
